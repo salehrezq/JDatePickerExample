@@ -10,6 +10,9 @@ import java.awt.FlowLayout;
 import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.Properties;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -48,8 +51,14 @@ public class JDatePickerExample {
         p.put("text.month", "Month");
         p.put("text.year", "Year");
         JDatePanelImpl datePanel = new JDatePanelImpl(model, p);
-// Don't know about the formatter, but there it is...
+
         JDatePickerImpl datePicker = new JDatePickerImpl(datePanel, new DateLabelFormatter());
+
+        datePicker.addActionListener((arg0) -> {
+            Date selectedDate = (Date) datePicker.getModel().getValue();
+            LocalDate date = LocalDate.ofInstant(selectedDate.toInstant(), ZoneId.systemDefault());
+            System.out.println(date);
+        });
 
         panel.add(datePicker);
         frame.getContentPane().add(panel, BorderLayout.CENTER);
